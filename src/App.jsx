@@ -41,8 +41,13 @@ function TaskLisk(props) {
         <h3 className='text-center uppercase text-lg font-semibold mb-6'>{props.taskName}</h3>
         <span>Estimated Time: {props.timeToDo} mins</span>
         <span>Priority: <span className={getPriority(props.priority)}>{props.priority}</span></span>
-        <button className={`${color} text-black py-2 px-4 text-xs md:w-1/2 mx-auto rounded-sm hover:cursor-pointer hover:bg-slate-600 hover:text-white transition-colors duration-200`} onClick={() => {updateColor(); updateText()}}>
+        <p className='line-clamp-2 text-sm'>Description: {props.description}</p>
+        <div className='flex justify-between gap-4 pt-4'>
+          <button className="bg-gray-50 text-black py-2 px-4 text-xs md:w-1/2 mx-auto rounded-sm hover:cursor-pointer hover:bg-slate-600 hover:text-white transition-colors duration-200" >Details</button>
+          <button className={`${color} text-black py-2 px-4 text-xs md:w-1/2 mx-auto rounded-sm hover:cursor-pointer hover:bg-slate-600 hover:text-white transition-colors duration-200`} onClick={() => {updateColor(); updateText()}}>
         {text}</button>
+        </div>
+
       </div>
   )
 }
@@ -53,31 +58,35 @@ function App() {
         taskName: "Install React",
         timeToDo: 60,
         priority: "High",
+        description: "This is a description of the task. Learn how to install react and get it running for your project",
         id: 1
     },
     {
         taskName: "Components",
         timeToDo: 90,
         priority: "High",
+        description: "This is a description of the task. What is a component, how do you build them and how do you use them",
         id: 2
     },
     {
         taskName: "Props",
         timeToDo: 120,
         priority: "Medium",
+        description: "This is a description of the task. What is a prop? What does it prop?",
         id: 3
     },
     {
         taskName: "Use with tailwind",
         timeToDo: 20,
         priority: "Low",
+        description: "This is a description of the task. Get Tailwind working with a react project.",
         id: 4
     }
   ])
   const [nextTaskId, setNextTaskId] = useState(5)
   const [isFormVisible, setIsFormVisible] = useState(false);
 
-  const handleAddTask = (taskName, timeToDo, priority) => {
+  const handleAddTask = (taskName, timeToDo, priority, description) => {
     if (!taskName.trim()) return; // Don't add empty tasks
     
     setTasks(prevTasks => [
@@ -86,6 +95,7 @@ function App() {
         taskName,
         timeToDo,
         priority,
+        description,
         id: nextTaskId
       }
     ])
@@ -100,7 +110,7 @@ function App() {
       <div className='flex flex-col md:flex-row font-main'>
         <Nav />
 
-        <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-[200px] gap-10 p-10'>
+        <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:auto-rows-[250px] gap-10 p-10'>
         <AddTaskForm 
           isVisible={isFormVisible}
           addTask={handleAddTask} />
@@ -109,6 +119,7 @@ function App() {
               taskName={task.taskName}
               timeToDo={task.timeToDo}
               priority={task.priority}
+              description={task.description}
               key={task.id}
             />
           )}
