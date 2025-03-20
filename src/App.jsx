@@ -1,34 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Header from './Header.jsx'
 import Nav from './Nav.jsx'
 import AddTaskForm from './AddTaskForm.jsx'
-
-// const tasks = [
-//   {
-//       taskName: "Install React",
-//       timeToDo: 60,
-//       priority: "High",
-//       id: 1
-//   },
-//   {
-//       taskName: "Components",
-//       timeToDo: 90,
-//       priority: "High",
-//       id: 2
-//   },
-//   {
-//       taskName: "Props",
-//       timeToDo: 120,
-//       priority: "Medium",
-//       id: 3
-//   },
-//   {
-//       taskName: "Use with tailwind",
-//       timeToDo: 20,
-//       priority: "Low",
-//       id: 4
-//   }
-// ]
 
 function getPriority(priority) {
   switch (priority) {
@@ -68,7 +41,7 @@ function TaskLisk(props) {
         <h3 className='text-center uppercase text-lg font-semibold mb-6'>{props.taskName}</h3>
         <span>Estimated Time: {props.timeToDo} mins</span>
         <span>Priority: <span className={getPriority(props.priority)}>{props.priority}</span></span>
-        <button className={`${color} text-black py-2 px-4 text-xs md:w-1/2 mx-auto rounded-sm hover:cursor-pointer`} onClick={() => {updateColor(); updateText()}}>
+        <button className={`${color} text-black py-2 px-4 text-xs md:w-1/2 mx-auto rounded-sm hover:cursor-pointer hover:bg-slate-600 hover:text-white transition-colors duration-200`} onClick={() => {updateColor(); updateText()}}>
         {text}</button>
       </div>
   )
@@ -104,15 +77,15 @@ function App() {
   const [nextTaskId, setNextTaskId] = useState(5)
   const [isFormVisible, setIsFormVisible] = useState(false);
 
-  const handleAddTask = (taskName) => {
+  const handleAddTask = (taskName, timeToDo, priority) => {
     if (!taskName.trim()) return; // Don't add empty tasks
     
     setTasks(prevTasks => [
       ...prevTasks,
       {
         taskName,
-        timeToDo: 0,
-        priority: "Low",
+        timeToDo,
+        priority,
         id: nextTaskId
       }
     ])
