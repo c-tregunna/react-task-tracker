@@ -1,33 +1,34 @@
 import { useState } from 'react'
 import Header from './Header.jsx'
 import Nav from './Nav.jsx'
+import AddTaskForm from './AddTaskForm.jsx'
 
-const tasks = [
-  {
-      taskName: "Install React",
-      timeToDo: 60,
-      priority: "High",
-      id: 1
-  },
-  {
-      taskName: "Components",
-      timeToDo: 90,
-      priority: "High",
-      id: 2
-  },
-  {
-      taskName: "Props",
-      timeToDo: 120,
-      priority: "Medium",
-      id: 3
-  },
-  {
-      taskName: "Use with tailwind",
-      timeToDo: 20,
-      priority: "Low",
-      id: 4
-  }
-]
+// const tasks = [
+//   {
+//       taskName: "Install React",
+//       timeToDo: 60,
+//       priority: "High",
+//       id: 1
+//   },
+//   {
+//       taskName: "Components",
+//       timeToDo: 90,
+//       priority: "High",
+//       id: 2
+//   },
+//   {
+//       taskName: "Props",
+//       timeToDo: 120,
+//       priority: "Medium",
+//       id: 3
+//   },
+//   {
+//       taskName: "Use with tailwind",
+//       timeToDo: 20,
+//       priority: "Low",
+//       id: 4
+//   }
+// ]
 
 function getPriority(priority) {
   switch (priority) {
@@ -74,12 +75,62 @@ function TaskLisk(props) {
 }
 
 function App() {
+  const [tasks, setTasks] = useState( [
+    {
+        taskName: "Install React",
+        timeToDo: 60,
+        priority: "High",
+        id: 1
+    },
+    {
+        taskName: "Components",
+        timeToDo: 90,
+        priority: "High",
+        id: 2
+    },
+    {
+        taskName: "Props",
+        timeToDo: 120,
+        priority: "Medium",
+        id: 3
+    },
+    {
+        taskName: "Use with tailwind",
+        timeToDo: 20,
+        priority: "Low",
+        id: 4
+    }
+  ])
+  const [nextTaskId, setNextTaskId] = useState(5)
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
+  const handleAddTask = (taskName) => {
+    if (!taskName.trim()) return; // Don't add empty tasks
+    
+    setTasks(prevTasks => [
+      ...prevTasks,
+      {
+        taskName,
+        timeToDo: 0,
+        priority: "Low",
+        id: nextTaskId
+      }
+    ])
+    setNextTaskId(prevId => prevId + 1)
+    setIsFormVisible(false) // Hide the form after submission
+  }
+
+
   return (
     <>
-      <Header />
+      <Header onCreateTask={() => setIsFormVisible(true)} />
       <div className='flex flex-col md:flex-row font-main'>
         <Nav />
+
         <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-[200px] gap-10 p-10'>
+        <AddTaskForm 
+          isVisible={isFormVisible}
+          addTask={handleAddTask} />
           {tasks.map(task =>
             <TaskLisk 
               taskName={task.taskName}
@@ -88,6 +139,7 @@ function App() {
               key={task.id}
             />
           )}
+
         </div>
       </div>
     </>
